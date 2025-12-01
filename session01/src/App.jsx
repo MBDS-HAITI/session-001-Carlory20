@@ -23,12 +23,21 @@ function MainContent() {
   )
 }
 
+function Footer() {
+  return (
+    <footer>
+      <p>Tous droits réservés - El. Carlo</p>
+    </footer>
+  )
+}
+
 function App() {
  
   return (
     <>
       <Header />
       <MainContent />
+      <Footer />
     </>
   )
 }
