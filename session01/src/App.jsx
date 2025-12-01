@@ -16,12 +16,51 @@ function Header() {
 }
 
 function MainContent() {
+  const now = new Date();
+
+  const jours = [
+    "dimanche",
+    "lundi",
+    "mardi",
+    "mercredi",
+    "jeudi",
+    "vendredi",
+    "samedi",
+  ];
+
+  const mois = [
+    "janvier",
+    "février",
+    "mars",
+    "avril",
+    "mai",
+    "juin",
+    "juillet",
+    "août",
+    "septembre",
+    "octobre",
+    "novembre",
+    "décembre",
+  ];
+
+  const jourNom = jours[now.getDay()];
+  const moisNom = mois[now.getMonth()];
+  const annee = now.getFullYear();
+
+  const heure = String(now.getHours()).padStart(2, "0");
+  const minute = String(now.getMinutes()).padStart(2, "0");
+  const seconde = String(now.getSeconds()).padStart(2, "0");
+
   return (
-    <p>
-      Ici, nous afficherons des informations interessantes :) 
-    </p>
-  )
+    <main>
+      <p>
+        Bonjour, on est le {jourNom}, {moisNom}, {annee} et il est {heure}:
+        {minute}:{seconde}
+      </p>
+    </main>
+  );
 }
+
 
 function Footer() {
   return (
