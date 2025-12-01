@@ -63,12 +63,15 @@ function MainContent() {
 
 
 function Footer() {
+  const year = new Date().getFullYear();
+
   return (
-    <footer>
-      <p>Tous droits réservés - El. Carlo</p>
+    <footer className="footer">
+      © {year} - Carlory.Eliantus, Tous droits réservés.
     </footer>
-  )
+  );
 }
+
 
 function App() {
  
