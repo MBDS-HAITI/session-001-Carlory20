@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import "./App.css";
 import mbdsLogo from "./assets/mbds.jpg";
-
-import notes from "./data/data.json";          // 👈 import des données
-import { getRandomItem } from "./utils/randomNote"; // 👈 fonction utilitaire
-import NoteDetails from "./components/NoteDetails";  // 👈 composant d'affichage
+import Menu from "./components/Menu";
+import notes from "./data/data.json";          
+import { getRandomItem } from "./utils/randomNote"; 
+import NoteDetails from "./components/NoteDetails";  
 
 function Header() {
   return (
@@ -50,6 +50,7 @@ function Footer() {
 function App() {
   return (
     <div className="app-container">
+      <Menu />
       <Header />
       <MainContent />
       <Footer />
