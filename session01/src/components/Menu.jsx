@@ -1,21 +1,21 @@
 // src/components/Menu.jsx
 import React from "react";
 
-const menuItems = ["Notes", "Etudiants", "Matières", "A propos"];
-
-function Menu() {
-  const handleClick = (label) => {
-    alert(label);
+function Menu({ items, selectedItem, onSelect }) {
+  const handleClick = (item) => {
+    onSelect(item);      // menu dynamique : change le contenu
   };
 
   return (
     <nav className="menu">
       <ul className="menu-list">
-        {menuItems.map((item) => (
+        {items.map((item) => (
           <li key={item} className="menu-item">
             <button
               type="button"
-              className="menu-button"
+              className={`menu-button ${
+                selectedItem === item ? "menu-button-active" : ""
+              }`}
               onClick={() => handleClick(item)}
             >
               {item}

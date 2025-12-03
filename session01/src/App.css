@@ -1,74 +1,114 @@
+/* === BASE === */
+* {
+  box-sizing: border-box;
+  font-family: "Inter", sans-serif;
+}
+
+html,
+body,
 #root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
+  margin: 0;
+  padding: 0;
+  min-height: 100%;
+  background: #f2f4f7;
 }
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
-}
-
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+/* === PAGE === */
+.page {
+  max-width: 1100px;
+  margin: 2rem auto;
+  background: white;
+  min-height: 90vh;
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: 0px 4px 30px rgba(0, 0, 0, 0.06);
+  display: flex;
+  flex-direction: column;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
-}
-
-.card {
-  padding: 2em;
-}
-
-.read-the-docs {
-  color: #888;
-}
-
-.footer {
-  text-align: center;
-  padding: 1rem 0;
-  background-color: #f3f3f3;
-  border-top: 1px solid #ddd;
-}
+/* === MENU TOP === */
 .menu {
-  position: absolute;
-  top: 1rem;
-  left: 1rem;
+  padding: 0.8rem 1rem;
+  border-bottom: 1px solid #e5e7eb;
+  background: white;
 }
 
 .menu-list {
-  list-style: none;
-  margin: 0;
-  padding: 0;
   display: flex;
-  gap: 0.75rem;
+  justify-content: center;
+  gap: 1.2rem;
+  padding: 0;
+  margin: 0;
+  list-style: none;
 }
 
 .menu-button {
+  padding: 0.5rem 1rem;
   background: transparent;
+  border-radius: 8px;
+  font-weight: 500;
   border: none;
-  font-size: 0.95rem;
   cursor: pointer;
-  font-weight: 600;
+  color: #475569;
+  transition: 0.25s;
 }
 
 .menu-button:hover {
-  text-decoration: underline;
+  background: #e2e8f0;
+}
+
+.menu-button-active {
+  background: #2563eb;
+  color: white;
+  box-shadow: 0 2px 6px rgba(37, 99, 235, 0.4);
+}
+
+/* === HEADER === */
+.header {
+  text-align: center;
+  padding: 2.5rem 1rem 2rem;
+  background: white;
+}
+
+.logo {
+  height: 70px;
+  margin-bottom: 0.8rem;
+  filter: drop-shadow(0px 2px 2px rgba(0, 0, 0, 0.1));
+}
+
+.header h1 {
+  margin: 0;
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: #1e293b;
+}
+
+.header h2 {
+  margin-top: 0.3rem;
+  color: #64748b;
+  font-weight: 400;
+  font-size: 1rem;
+}
+
+/* === CONTENT === */
+.content {
+  padding: 2rem;
+  flex: 1;
+  animation: fadeIn 0.4s ease;
+}
+
+/* === FOOTER === */
+.footer {
+  text-align: center;
+  padding: 1rem;
+  color: #64748b;
+  font-size: 0.9rem;
+  border-top: 1px solid #e2e8f0;
+  background: #fafafa;
+}
+
+/* === ANIMATIONS === */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
 }

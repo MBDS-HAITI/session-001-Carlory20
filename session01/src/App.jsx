@@ -1,10 +1,11 @@
 import React, { useState } from "react";
 import "./App.css";
-import mbdsLogo from "./assets/mbds.jpg";
+import mbdsLogo from "./assets/mbds.jpg";   // ton logo
 import Menu from "./components/Menu";
-import notes from "./data/data.json";          
-import { getRandomItem } from "./utils/randomNote"; 
-import NoteDetails from "./components/NoteDetails";  
+import Content from "./components/Content";
+import notesData from "./data/data.json";
+
+const MENU_ITEMS = ["Notes", "Etudiants", "Matières", "A propos"];
 
 function Header() {
   return (
@@ -18,42 +19,33 @@ function Header() {
   );
 }
 
-function MainContent() {
-  const [selectedNote, setSelectedNote] = useState(getRandomItem(notes));
-
-  const handleRandomClick = () => {
-    const randomNote = getRandomItem(notes);
-    setSelectedNote(randomNote);
-  };
-
-  return (
-    <main>
-      <button onClick={handleRandomClick}>
-        Afficher une note aléatoire
-      </button>
-
-      <NoteDetails note={selectedNote} />
-    </main>
-  );
-}
-
 function Footer() {
   const year = new Date().getFullYear();
-
   return (
     <footer className="footer">
-      © {year} - Carlory Eliantus, Tous droits réservés.
+      © {year} - Carlory.Eliantus, Tous droits réservés.
     </footer>
   );
 }
 
 function App() {
+  const [selectedMenu, setSelectedMenu] = useState("Notes");
+
   return (
     <div className="app-container">
-      <Menu />
-      <Header />
-      <MainContent />
-      <Footer />
+      <div className="page">
+        <Menu
+          items={MENU_ITEMS}
+          selectedItem={selectedMenu}
+          onSelect={setSelectedMenu}
+        />
+
+        <Header />
+
+        <Content selectedMenu={selectedMenu} notes={notesData} />
+
+        <Footer />
+      </div>
     </div>
   );
 }
