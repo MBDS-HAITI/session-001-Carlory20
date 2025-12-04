@@ -5,7 +5,7 @@ import StudentsPage from "./StudentsPage";
 import CoursesPage from "./CoursesPage";
 import AboutPage from "./AboutPage";
 
-function Content({ selectedMenu, notes, loading, error }) {
+function Content({ selectedMenu, notes, students, courses, loading, error }) {
   if (loading) {
     return (
       <main className="content">
@@ -25,8 +25,8 @@ function Content({ selectedMenu, notes, loading, error }) {
   return (
     <main className="content" key={selectedMenu}>
       {selectedMenu === "Notes" && <NotesPage notes={notes} />}
-      {selectedMenu === "Etudiants" && <StudentsPage notes={notes} />}
-      {selectedMenu === "Matières" && <CoursesPage notes={notes} />}
+      {selectedMenu === "Etudiants" && <StudentsPage students={students} />}
+      {selectedMenu === "Matières" && <CoursesPage courses={courses} />}
       {selectedMenu === "A propos" && <AboutPage />}
     </main>
   );

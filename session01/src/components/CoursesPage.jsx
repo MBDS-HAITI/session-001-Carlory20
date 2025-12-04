@@ -1,3 +1,4 @@
+// src/components/CoursesPage.jsx
 import React, { useState } from "react";
 import {
   Table,
@@ -13,26 +14,17 @@ import {
   Box,
 } from "@mui/material";
 
-function CoursesPage({ notes }) {
-  // Regrouper par matière
-  const coursesMap = new Map();
-
-  notes.forEach((note) => {
-    if (!coursesMap.has(note.course)) {
-      coursesMap.set(note.course, { course: note.course, count: 1 });
-    } else {
-      coursesMap.get(note.course).count += 1;
-    }
-  });
-
-  const courses = Array.from(coursesMap.values());
-
+function CoursesPage({ courses }) {
   // --- Recherche ---
   const [search, setSearch] = useState("");
 
-  const filteredCourses = courses.filter((c) =>
-    c.course.toLowerCase().includes(search.toLowerCase())
-  );
+  const filteredCourses = courses.filter((c) => {
+    const txt = search.toLowerCase();
+    return (
+      (c.name || "").toLowerCase().includes(txt) ||
+      (c.code || "").toLowerCase().includes(txt)
+    );
+  });
 
   // --- Pagination ---
   const [page, setPage] = useState(0);
@@ -59,35 +51,39 @@ function CoursesPage({ notes }) {
       </Typography>
 
       <TextField
-        label="Rechercher une matière..."
+        label="Rechercher (nom, code...)"
         variant="outlined"
         size="small"
         fullWidth
         value={search}
         onChange={(e) => {
           setSearch(e.target.value);
-          setPage(0); // revenir à la page 1 après filtre
+          setPage(0);
         }}
         sx={{ mb: 2 }}
       />
 
-      <TableContainer component={Paper} elevation={1}  sx={{
-    borderRadius: "12px",
-    border: "1px solid #e2e8f0",
-    overflow: "hidden",
-  }}>
+      <TableContainer
+        component={Paper}
+        elevation={1}
+        sx={{
+          borderRadius: "12px",
+          border: "1px solid #e2e8f0",
+          overflow: "hidden",
+        }}
+      >
         <Table>
           <TableHead>
             <TableRow>
+              <TableCell>Code</TableCell>
               <TableCell>Matière</TableCell>
-              <TableCell>Nombre de notes</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
             {paginatedCourses.map((c) => (
-              <TableRow key={c.course}>
-                <TableCell>{c.course}</TableCell>
-                <TableCell>{c.count}</TableCell>
+              <TableRow key={c.id}>
+                <TableCell>{c.code}</TableCell>
+                <TableCell>{c.name}</TableCell>
               </TableRow>
             ))}
 

@@ -1,3 +1,4 @@
+// src/components/StudentsPage.jsx
 import React, { useState } from "react";
 import {
   Table,
@@ -13,24 +14,14 @@ import {
   Box,
 } from "@mui/material";
 
-function StudentsPage({ notes }) {
-  // Construire la liste des étudiants à partir des notes (sans doublons)
-  const studentsMap = new Map();
-  notes.forEach((note) => {
-    studentsMap.set(note.student.id, note.student);
-  });
-  const students = Array.from(studentsMap.values());
-
+function StudentsPage({ students }) {
   // --- Recherche ---
   const [search, setSearch] = useState("");
 
   const filteredStudents = students.filter((s) => {
     const fullName = `${s.firstname} ${s.lastname}`.toLowerCase();
     const txt = search.toLowerCase();
-    return (
-      fullName.includes(txt) ||
-      String(s.id).includes(txt)
-    );
+    return fullName.includes(txt) || String(s.id).includes(txt);
   });
 
   // --- Pagination ---
@@ -65,16 +56,20 @@ function StudentsPage({ notes }) {
         value={search}
         onChange={(e) => {
           setSearch(e.target.value);
-          setPage(0); // on revient à la 1ère page après une recherche
+          setPage(0);
         }}
         sx={{ mb: 2 }}
       />
 
-      <TableContainer component={Paper} elevation={1}  sx={{
-    borderRadius: "12px",
-    border: "1px solid #e2e8f0",
-    overflow: "hidden",
-  }}>
+      <TableContainer
+        component={Paper}
+        elevation={1}
+        sx={{
+          borderRadius: "12px",
+          border: "1px solid #e2e8f0",
+          overflow: "hidden",
+        }}
+      >
         <Table>
           <TableHead>
             <TableRow>
