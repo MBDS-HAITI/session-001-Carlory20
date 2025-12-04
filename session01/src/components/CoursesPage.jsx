@@ -1,4 +1,3 @@
-// src/components/CoursesPage.jsx
 import React, { useState } from "react";
 import {
   Table,

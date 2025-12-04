@@ -5,7 +5,23 @@ import StudentsPage from "./StudentsPage";
 import CoursesPage from "./CoursesPage";
 import AboutPage from "./AboutPage";
 
-function Content({ selectedMenu, notes }) {
+function Content({ selectedMenu, notes, loading, error }) {
+  if (loading) {
+    return (
+      <main className="content">
+        <p>Chargement des données...</p>
+      </main>
+    );
+  }
+
+  if (error) {
+    return (
+      <main className="content">
+        <p style={{ color: "red" }}>Erreur : {error}</p>
+      </main>
+    );
+  }
+
   return (
     <main className="content" key={selectedMenu}>
       {selectedMenu === "Notes" && <NotesPage notes={notes} />}

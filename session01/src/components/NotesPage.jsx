@@ -1,4 +1,3 @@
-// src/components/NotesPage.jsx
 import React, { useState } from "react";
 import {
   Table,

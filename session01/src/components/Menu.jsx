@@ -1,4 +1,3 @@
-// src/components/Menu.jsx
 import React from "react";
 
 function Menu({ items, selectedItem, onSelect }) {
