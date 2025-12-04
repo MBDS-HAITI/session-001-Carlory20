@@ -12,6 +12,7 @@ import {
   TablePagination,
   Typography,
   Box,
+  Chip,
 } from "@mui/material";
 
 function NotesPage({ notes }) {
@@ -19,8 +20,8 @@ function NotesPage({ notes }) {
   const dedupedNotes = Array.from(
     new Map(
       notes.map((note) => [
-        `${note.student.id}-${note.course}-${note.date}`, // clé unique
-        note,                                             // note conservée
+        `${note.student.id}-${note.course}-${note.date}`,
+        note,
       ])
     ).values()
   );
@@ -81,90 +82,134 @@ function NotesPage({ notes }) {
     page * rowsPerPage + rowsPerPage
   );
 
+  // 🎨 fonction util pour colorer la note
+  const getGradeColor = (grade) => {
+    if (grade >= 90) return "success";
+    if (grade >= 70) return "warning";
+    return "error";
+  };
+
   return (
     <Box>
-      <Typography variant="h5" component="h2" gutterBottom>
-        Notes
-      </Typography>
+      {/* Header + barre de recherche */}
+      <Box
+        mb={2}
+        display="flex"
+        justifyContent="space-between"
+        alignItems="center"
+        flexWrap="wrap"
+        gap={2}
+      >
+        <Box>
+          <Typography variant="h5" component="h2">
+            Notes
+          </Typography>
+         
+        </Box>
 
-      <TextField
-        label="Rechercher (nom, cours, note...)"
-        variant="outlined"
-        size="small"
-        fullWidth
-        value={search}
-        onChange={(e) => {
-          setSearch(e.target.value);
-          setPage(0); // revenir page 1 après filtre
+        <TextField
+          label="Rechercher (nom, cours, note...)"
+          variant="outlined"
+          size="small"
+          value={search}
+          onChange={(e) => {
+            setSearch(e.target.value);
+            setPage(0);
+          }}
+          sx={{ minWidth: 260 }}
+        />
+      </Box>
+
+      <Paper
+        elevation={2}
+        sx={{
+          borderRadius: "16px",
+          border: "1px solid #e2e8f0",
+          overflow: "hidden",
         }}
-        sx={{ mb: 2 }}
-      />
-
-      <TableContainer component={Paper} elevation={1}  sx={{
-    borderRadius: "12px",
-    border: "1px solid #e2e8f0",
-    overflow: "hidden",
-  }}>
-        <Table>
-          <TableHead>
-            <TableRow>
-              <TableCell>ID</TableCell>
-              <TableCell>Cours</TableCell>
-              <TableCell>Étudiant</TableCell>
-              <TableCell>
-                <TableSortLabel
-                  active={orderBy === "date"}
-                  direction={orderBy === "date" ? order : "asc"}
-                  onClick={() => handleSortRequest("date")}
-                >
-                  Date
-                </TableSortLabel>
-              </TableCell>
-              <TableCell>
-                <TableSortLabel
-                  active={orderBy === "grade"}
-                  direction={orderBy === "grade" ? order : "asc"}
-                  onClick={() => handleSortRequest("grade")}
-                >
-                  Note
-                </TableSortLabel>
-              </TableCell>
-            </TableRow>
-          </TableHead>
-
-          <TableBody>
-            {paginatedNotes.map((note) => (
-              <TableRow key={note.unique_id}>
-                <TableCell>{note.unique_id}</TableCell>
-                <TableCell>{note.course}</TableCell>
+      >
+        <TableContainer>
+          <Table>
+            <TableHead>
+              <TableRow
+                sx={{
+                  background:
+                    "linear-gradient(90deg, rgba(37,99,235,0.08), rgba(147,51,234,0.08))",
+                }}
+              >
+                <TableCell>ID</TableCell>
+                <TableCell>Cours</TableCell>
+                <TableCell>Étudiant</TableCell>
                 <TableCell>
-                  {note.student.firstname} {note.student.lastname}
+                  <TableSortLabel
+                    active={orderBy === "date"}
+                    direction={orderBy === "date" ? order : "asc"}
+                    onClick={() => handleSortRequest("date")}
+                  >
+                    Date
+                  </TableSortLabel>
                 </TableCell>
-                <TableCell>{note.date}</TableCell>
-                <TableCell>{note.grade}</TableCell>
-              </TableRow>
-            ))}
-
-            {paginatedNotes.length === 0 && (
-              <TableRow>
-                <TableCell colSpan={5} align="center">
-                  Aucune note trouvée.
+                <TableCell align="right">
+                  <TableSortLabel
+                    active={orderBy === "grade"}
+                    direction={orderBy === "grade" ? order : "asc"}
+                    onClick={() => handleSortRequest("grade")}
+                  >
+                    Note
+                  </TableSortLabel>
                 </TableCell>
               </TableRow>
-            )}
-          </TableBody>
-        </Table>
-      </TableContainer>
+            </TableHead>
 
-      <TablePagination
-        component="div"
-        count={sortedNotes.length}
-        page={page}
-        onPageChange={handleChangePage}
-        rowsPerPage={rowsPerPage}
-        onRowsPerPageChange={handleChangeRowsPerPage}
-        labelRowsPerPage="Lignes par page"
-      />
+            <TableBody>
+              {paginatedNotes.map((note) => (
+                <TableRow
+                  key={note.unique_id}
+                  hover
+                  sx={{
+                    "&:hover": {
+                      backgroundColor: "#f1f5f9",
+                    },
+                  }}
+                >
+                  <TableCell>{note.unique_id}</TableCell>
+                  <TableCell>{note.course}</TableCell>
+                  <TableCell>
+                    {note.student.firstname} {note.student.lastname}
+                  </TableCell>
+                  <TableCell>{note.date}</TableCell>
+                  <TableCell align="right">
+                    <Chip
+                      label={note.grade}
+                      color={getGradeColor(note.grade)}
+                      size="small"
+                      sx={{ fontWeight: 600 }}
+                    />
+                  </TableCell>
+                </TableRow>
+              ))}
+
+              {paginatedNotes.length === 0 && (
+                <TableRow>
+                  <TableCell colSpan={5} align="center">
+                    Aucune note trouvée.
+                  </TableCell>
+                </TableRow>
+              )}
+            </TableBody>
+          </Table>
+        </TableContainer>
+
+        <TablePagination
+          component="div"
+          count={sortedNotes.length}
+          page={page}
+          onPageChange={handleChangePage}
+          rowsPerPage={rowsPerPage}
+          onRowsPerPageChange={handleChangeRowsPerPage}
+          labelRowsPerPage="Lignes par page"
+        />
+      </Paper>
     </Box>
   );
 }

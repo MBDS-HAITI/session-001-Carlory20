@@ -58,7 +58,7 @@ function App() {
           student: {
             firstname: g.student?.firstName || "",
             lastname: g.student?.lastName || "",
-            id: g.student?.id || "", // l'id logique de l'étudiant
+            id: g.student?.id || "", 
           },
           date: g.date ? g.date.substring(0, 10) : "",
           grade: g.grade,

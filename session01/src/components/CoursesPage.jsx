@@ -1,4 +1,3 @@
-// src/components/CoursesPage.jsx
 import React, { useState } from "react";
 import {
   Table,
@@ -15,8 +14,9 @@ import {
 } from "@mui/material";
 
 function CoursesPage({ courses }) {
-  // --- Recherche ---
   const [search, setSearch] = useState("");
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(5);
 
   const filteredCourses = courses.filter((c) => {
     const txt = search.toLowerCase();
@@ -25,10 +25,6 @@ function CoursesPage({ courses }) {
       (c.code || "").toLowerCase().includes(txt)
     );
   });
-
-  // --- Pagination ---
-  const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(5);
 
   const handleChangePage = (_event, newPage) => {
     setPage(newPage);
@@ -46,67 +42,91 @@ function CoursesPage({ courses }) {
 
   return (
     <Box>
-      <Typography variant="h5" component="h2" gutterBottom>
-        Matières
-      </Typography>
+      <Box
+        mb={2}
+        display="flex"
+        justifyContent="space-between"
+        alignItems="center"
+        flexWrap="wrap"
+        gap={2}
+      >
+        <Box>
+          <Typography variant="h5" component="h2">
+            Matières
+          </Typography>
+        </Box>
 
-      <TextField
-        label="Rechercher (nom, code...)"
-        variant="outlined"
-        size="small"
-        fullWidth
-        value={search}
-        onChange={(e) => {
-          setSearch(e.target.value);
-          setPage(0);
-        }}
-        sx={{ mb: 2 }}
-      />
+        <TextField
+          label="Rechercher (nom, code...)"
+          variant="outlined"
+          size="small"
+          value={search}
+          onChange={(e) => {
+            setSearch(e.target.value);
+            setPage(0);
+          }}
+          sx={{ minWidth: 260 }}
+        />
+      </Box>
 
-      <TableContainer
-        component={Paper}
-        elevation={1}
+      <Paper
+        elevation={2}
         sx={{
-          borderRadius: "12px",
+          borderRadius: "16px",
           border: "1px solid #e2e8f0",
           overflow: "hidden",
         }}
       >
-        <Table>
-          <TableHead>
-            <TableRow>
-              <TableCell>Code</TableCell>
-              <TableCell>Matière</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {paginatedCourses.map((c) => (
-              <TableRow key={c.id}>
-                <TableCell>{c.code}</TableCell>
-                <TableCell>{c.name}</TableCell>
+        <TableContainer>
+          <Table>
+            <TableHead>
+              <TableRow
+                sx={{
+                  background:
+                    "linear-gradient(90deg, rgba(37,99,235,0.08), rgba(147,51,234,0.08))",
+                }}
+              >
+                <TableCell>Code</TableCell>
+                <TableCell>Matière</TableCell>
               </TableRow>
-            ))}
+            </TableHead>
+            <TableBody>
+              {paginatedCourses.map((c) => (
+                <TableRow
+                  key={c.id}
+                  hover
+                  sx={{
+                    "&:hover": {
+                      backgroundColor: "#f1f5f9",
+                    },
+                  }}
+                >
+                  <TableCell>{c.code}</TableCell>
+                  <TableCell>{c.name}</TableCell>
+                </TableRow>
+              ))}
 
-            {paginatedCourses.length === 0 && (
-              <TableRow>
-                <TableCell colSpan={2} align="center">
-                  Aucune matière trouvée.
-                </TableCell>
-              </TableRow>
-            )}
-          </TableBody>
-        </Table>
-      </TableContainer>
+              {paginatedCourses.length === 0 && (
+                <TableRow>
+                  <TableCell colSpan={2} align="center">
+                    Aucune matière trouvée.
+                  </TableCell>
+                </TableRow>
+              )}
+            </TableBody>
+          </Table>
+        </TableContainer>
 
-      <TablePagination
-        component="div"
-        count={filteredCourses.length}
-        page={page}
-        onPageChange={handleChangePage}
-        rowsPerPage={rowsPerPage}
-        onRowsPerPageChange={handleChangeRowsPerPage}
-        labelRowsPerPage="Lignes par page"
-      />
+        <TablePagination
+          component="div"
+          count={filteredCourses.length}
+          page={page}
+          onPageChange={handleChangePage}
+          rowsPerPage={rowsPerPage}
+          onRowsPerPageChange={handleChangeRowsPerPage}
+          labelRowsPerPage="Lignes par page"
+        />
+      </Paper>
     </Box>
   );
 }
