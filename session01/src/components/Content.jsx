@@ -1,4 +1,3 @@
-// src/components/Content.jsx
 import React from "react";
 import NotesPage from "./NotesPage";
 import StudentsPage from "./StudentsPage";

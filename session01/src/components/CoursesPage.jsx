@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import PageWrapper from "./PageWrapper";
 import {
   Table,
   TableBody,
@@ -16,7 +17,7 @@ import {
 function CoursesPage({ courses }) {
   const [search, setSearch] = useState("");
   const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(5);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
 
   const filteredCourses = courses.filter((c) => {
     const txt = search.toLowerCase();
@@ -41,6 +42,7 @@ function CoursesPage({ courses }) {
   );
 
   return (
+    <PageWrapper>
     <Box>
       <Box
         mb={2}
@@ -124,10 +126,12 @@ function CoursesPage({ courses }) {
           onPageChange={handleChangePage}
           rowsPerPage={rowsPerPage}
           onRowsPerPageChange={handleChangeRowsPerPage}
+          rowsPerPageOptions={[5, 10, 25, 50, 100]}
           labelRowsPerPage="Lignes par page"
         />
       </Paper>
     </Box>
+    </PageWrapper>
   );
 }
 
