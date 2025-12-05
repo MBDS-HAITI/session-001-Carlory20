@@ -1,11 +1,14 @@
-// src/App.jsx
 import React, { useState, useEffect } from "react";
 import "./App.css";
 import mbdsLogo from "./assets/mbds.jpg";
 import Menu from "./components/Menu";
-import Content from "./components/Content";
+import NotesPage from "./components/NotesPage";
+import StudentsPage from "./components/StudentsPage";
+import CoursesPage from "./components/CoursesPage";
+import AboutPage from "./components/AboutPage";
+import Home from "./components/Home";
+import { Routes, Route } from "react-router-dom";
 
-const MENU_ITEMS = ["Notes", "Etudiants", "Matières", "A propos"];
 const API_BASE_URL = "http://localhost:8010/api";
 
 function Header() {
@@ -14,7 +17,7 @@ function Header() {
       <img src={mbdsLogo} alt="logo mbds" className="logo" />
       <div>
         <h1>Introduction à React</h1>
-        <h2>À la découverte des premières notions de React</h2>
+        <h2>Application de gestion des notes (Node, MongoDB, React)</h2>
       </div>
     </header>
   );
@@ -30,12 +33,9 @@ function Footer() {
 }
 
 function App() {
-  const [selectedMenu, setSelectedMenu] = useState("Notes");
-
   const [notes, setNotes] = useState([]);
   const [students, setStudents] = useState([]);
   const [courses, setCourses] = useState([]);
-
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
@@ -45,7 +45,7 @@ function App() {
         setLoading(true);
         setError(null);
 
-        // 1) GRADES
+        // GRADES
         const gradesResponse = await fetch(`${API_BASE_URL}/grades`);
         if (!gradesResponse.ok) {
           throw new Error(`Erreur HTTP grades ${gradesResponse.status}`);
@@ -58,14 +58,14 @@ function App() {
           student: {
             firstname: g.student?.firstName || "",
             lastname: g.student?.lastName || "",
-            id: g.student?.id || "", 
+            id: g.student?.id || "",
           },
           date: g.date ? g.date.substring(0, 10) : "",
           grade: g.grade,
         }));
         setNotes(mappedNotes);
 
-        // 2) STUDENTS
+        // STUDENTS
         const studentsResponse = await fetch(`${API_BASE_URL}/students`);
         if (!studentsResponse.ok) {
           throw new Error(`Erreur HTTP students ${studentsResponse.status}`);
@@ -73,14 +73,13 @@ function App() {
         const apiStudents = await studentsResponse.json();
 
         const mappedStudents = apiStudents.map((s, index) => ({
-          // si s.id n'existe pas pour certains (cas anciens), fallback sur index
           id: s.id ?? index,
           firstname: s.firstName || "",
           lastname: s.lastName || "",
         }));
         setStudents(mappedStudents);
 
-        // 3) COURSES
+        // COURSES
         const coursesResponse = await fetch(`${API_BASE_URL}/courses`);
         if (!coursesResponse.ok) {
           throw new Error(`Erreur HTTP courses ${coursesResponse.status}`);
@@ -107,24 +106,36 @@ function App() {
   return (
     <div className="app-container">
       <div className="page">
-        <Menu
-          items={MENU_ITEMS}
-          selectedItem={selectedMenu}
-          onSelect={setSelectedMenu}
-        />
+        <Menu />
 
-        <Header />
+        <div className="main-content">
+          <Header />
 
-        <Content
-          selectedMenu={selectedMenu}
-          notes={notes}
-          students={students}
-          courses={courses}
-          loading={loading}
-          error={error}
-        />
+          <main className="content">
+            {loading && <p>Chargement des données...</p>}
+            {error && !loading && (
+              <p style={{ color: "red" }}>Erreur : {error}</p>
+            )}
 
-        <Footer />
+            {!loading && !error && (
+              <Routes>
+                <Route path="/" element={<Home />} />
+                <Route path="/notes" element={<NotesPage notes={notes} />} />
+                <Route
+                  path="/students"
+                  element={<StudentsPage students={students} />}
+                />
+                <Route
+                  path="/courses"
+                  element={<CoursesPage courses={courses} />}
+                />
+                <Route path="/about" element={<AboutPage />} />
+              </Routes>
+            )}
+          </main>
+
+          <Footer />
+        </div>
       </div>
     </div>
   );
